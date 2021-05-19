@@ -163,8 +163,8 @@ def visualisation(height, width, days):
             move(terrain=terrain, height=height, width=width, hg=i[0], wd=i[1], animal=i[2])
 
 
-height_ = int(input('Write the height of terrain(recommended value is 3 for betters visualising) : '))
-width_ = int(input('Write the width of terrain(recommended value is 3 for betters visualising) :'))
+height_ = int(input('Write the height of terrain(recommended value is 3 for better visualising) : '))
+width_ = int(input('Write the width of terrain(recommended value is 3 for better visualising) :'))
 days_ = int(input('How much days of terrain live you want to see (5):'))
 print()
 print()
