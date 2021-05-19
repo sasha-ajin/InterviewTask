@@ -125,7 +125,8 @@ def visualisation(height, width, days):
                         # For hungry Carnivore
                         elif animal.animal_type == 'Carnivore':
                             counter_of_carnivores = 0
-                            for assumed_not_carnivore in terrain[hg][wd].animals:
+                            for assumed_not_carnivore in terrain[hg][wd].animals:# Checking all animals in the same terrain cell 
+                                #for finding alive and not carnivore
                                 if assumed_not_carnivore.animal_type != 'Carnivore' and assumed_not_carnivore.hunger >= 1:
                                     eaten(assumed_not_carnivore)
                                     animal.hunger += 2
@@ -139,7 +140,8 @@ def visualisation(height, width, days):
                         # For hungry Scavenger
                         elif animal.animal_type == 'Scavenger':
                             counter_of_not_dead = 0
-                            for assumed_dead in terrain[hg][wd].animals:
+                            for assumed_dead in terrain[hg][wd].animals:# Checking all animals in the same terrain cell 
+                                #for finding dead
                                 if assumed_dead.status == 'DEAD':
                                     eaten(assumed_dead)
                                     animal.hunger += 2
