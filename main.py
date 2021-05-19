@@ -54,7 +54,7 @@ def eaten(animal_obj):
     animal_obj.status = 'EATEN'
     animal_obj.hunger = 0
 
-
+# Сlockwise movement
 def move(terrain, height, width, hg, wd, animal):
     ind = terrain[hg][wd].animals.index(animal)  # index of the animal in list of animals
     anim = terrain[hg][wd].animals[ind]  # moved animal
