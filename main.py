@@ -154,7 +154,7 @@ class Terrain:
         self.terrain_list = [[self.create_terrain() for i in range(width)] for o in range(height)]
         # self.terrain_list=[] #For testing
 
-
+# Clockwize movement
 def move(terrain, height, width, hg, wd, animal):
     ind = terrain[hg][wd].animals.index(animal)  # index of the animal in list of animals
     anim = terrain[hg][wd].animals[ind]  # moved animal
