@@ -3,7 +3,7 @@ from random import randint, choice
 
 class Animal:
     def __init__(self):
-        self._hunger = randint(5, 10)
+        self._hunger = randint(1, 10)
         self._status = 'ALIVE'
 
     @property
@@ -43,11 +43,9 @@ class Carnivore(Animal):
         self._animal_type = 'Carnivore'
 
     def __str__(self):
-        # return f"{self._animal_type} {self._hunger} {self._status}"
         return f"{self._animal_type} {self._hunger} {self._status}"
 
     def __repr__(self):
-        # return f"{self._animal_type} {self._hunger} {self._status}"
         return f" {self._animal_type}{self._hunger} {self._status}"
 
 
@@ -57,11 +55,9 @@ class Herbivore(Animal):
         self._animal_type = 'Herbivore'
 
     def __str__(self):
-        # return f"{self._animal_type} {self._hunger} {self._status}"
         return f"{self._animal_type} {self._hunger} {self._status}"
 
     def __repr__(self):
-        # return f"{self._animal_type} {self._hunger} {self._status}"
         return f" {self._animal_type}{self._hunger} {self._status}"
 
 
@@ -88,7 +84,6 @@ class TerrainCell:
             return Herbivore()
 
     def __init__(self):
-#         ls_an = [Scavenger(), Carnivore(), Herbivore()]
         self.animals = [self.create_animal()]
 
 
@@ -156,7 +151,6 @@ class Terrain:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        # ls_terrain_types = [GRASS(), WATER(), MOUNTAIN(), DESERT()]
         self.terrain_list = [[self.create_terrain() for i in range(width)] for o in range(height)]
         # self.terrain_list=[] #For testing
 
@@ -184,7 +178,7 @@ def visualising(days, width, height):
     terrain = ter.terrain_list
 
     for day in range(days):
-        animals_for_moving = []
+        animals_for_moving = []  # list with data about animal,which are going to move
         # Killing animals in water
         for i in terrain:
             for o in i:
@@ -216,7 +210,7 @@ def visualising(days, width, height):
                         # For hungry Carnivore
                         elif isinstance(animal, Carnivore):
                             counter_not_carn = 0
-                            for assumed_not_carn in terrain[hg][wd].animals:
+                            for assumed_not_carn in terrain[hg][wd].animals:#iterating through the animals in terraincell
                                 if not isinstance(assumed_not_carn, Carnivore) and assumed_not_carn.status == 'ALIVE':
                                     assumed_not_carn.eaten()
                                     animal.hunger += 2
@@ -229,7 +223,7 @@ def visualising(days, width, height):
                         # For hungry Scavenger
                         elif isinstance(animal, Scavenger):
                             counter_not_dead = 0
-                            for assumed_dead in terrain[hg][wd].animals:
+                            for assumed_dead in terrain[hg][wd].animals:#iterating through the animals in terraincell
                                 if assumed_dead.status == 'DEAD':
                                     assumed_dead.eaten()
                                     animal.hunger += 2
