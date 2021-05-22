@@ -192,7 +192,12 @@ def visualising(days, width, height):
                 print(o, end=' | ')
             print()
             print('-' * 100)
+        print('')
+        print('')
         print('end of ' + str(day + 1) + ' day')
+        print('')
+        print('')
+
 
         # Changing terrain before the next day
         for hg in range(height):
