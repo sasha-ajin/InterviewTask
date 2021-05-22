@@ -1,37 +1,102 @@
 from random import randint, choice
 
-'''
-I've started with presenting Terrain as a class,but then I realized it'd be simpler to present it as a two-dimensional 
-list,let it stay here
-
-class Terrain:
-    def __init__(self, x, y, terrains):
-        self.x = x  # устанавливаем имя
-        self.y = y
-        self.terrains = list(terrains)
-
-    def __str__(self):
-        return f"{self.terrains}"
-'''
-
 
 class Animal:
-    def __init__(self, animal_type, hunger, status='ALIVE'):
-        self.animal_type = animal_type
-        self.hunger = int(hunger)
-        self.status = str(status)
+    def __init__(self):
+        self._hunger = randint(5, 10)
+        self._status = 'ALIVE'
+
+    @property
+    def hunger(self):
+        return self._hunger
+
+    @hunger.setter
+    def hunger(self, hunger):
+        if hunger in range(0, 11):
+            self._hunger = hunger
+        else:
+            print("Not valid hunger value")
+
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, status):
+        if status == 'DEAD' or status == 'EATEN' or status == 'ALIVE':
+            self._status = status
+        else:
+            print("Not valid animal status")
+
+    def death(self):
+        self.status = 'DEAD'
+        self.hunger = 0
+
+    def eaten(self):
+        self.status = 'EATEN'
+        self.hunger = 0
+
+
+class Carnivore(Animal):
+    def __init__(self):
+        Animal.__init__(self)
+        self._animal_type = 'Carnivore'
 
     def __str__(self):
-        return f"{self.animal_type} {self.hunger} {self.status}"
+        # return f"{self._animal_type} {self._hunger} {self._status}"
+        return f"{self._animal_type} {self._hunger} {self._status}"
 
     def __repr__(self):
-        return f"{self.animal_type} {self.hunger} {self.status}"
+        # return f"{self._animal_type} {self._hunger} {self._status}"
+        return f" {self._animal_type}{self._hunger} {self._status}"
+
+
+class Herbivore(Animal):
+    def __init__(self):
+        Animal.__init__(self)
+        self._animal_type = 'Herbivore'
+
+    def __str__(self):
+        # return f"{self._animal_type} {self._hunger} {self._status}"
+        return f"{self._animal_type} {self._hunger} {self._status}"
+
+    def __repr__(self):
+        # return f"{self._animal_type} {self._hunger} {self._status}"
+        return f" {self._animal_type}{self._hunger} {self._status}"
+
+
+class Scavenger(Animal):
+    def __init__(self):
+        Animal.__init__(self)
+        self._animal_type = 'Scavenger'
+
+    def __str__(self):
+        return f"{self._animal_type} {self._hunger} {self._status}"
+
+    def __repr__(self):
+        return f" {self._animal_type}{self._hunger} {self._status}"
 
 
 class TerrainCell:
-    def __init__(self, terrain_type, animals):
-        self.terrain_type = terrain_type  # устанавливаем имя
-        self.animals = list(animals)
+    def create_animal(self):
+        i = randint(1, 3)
+        if i == 1:
+            return Scavenger()
+        elif i == 2:
+            return Carnivore()
+        else:
+            return Herbivore()
+
+    def __init__(self):
+        ls_an = [Scavenger(), Carnivore(), Herbivore()]
+        self.animals = [self.create_animal()]
+
+
+class WATER(TerrainCell):
+
+    def __init__(self):
+        TerrainCell.__init__(self)
+        self.terrain_type = 'WATER'
 
     def __str__(self):
         return f"{self.terrain_type} , {self.animals}"
@@ -40,21 +105,62 @@ class TerrainCell:
         return f"{self.terrain_type}, {self.animals}"
 
 
-ls_terrain_types = ['DESERT', 'MOUNTAIN', 'GRASS', 'WATER']
-ls_status = ['DEAD', 'EATEN', 'ALIVE']
-ls_animal_type = ['Carnivore', 'Herbivore', 'Scavenger']
+class DESERT(TerrainCell):
+    def __init__(self):
+        TerrainCell.__init__(self)
+        self.terrain_type = 'DESERT'
+
+    def __str__(self):
+        return f"{self.terrain_type} , {self.animals}"
+
+    def __repr__(self):
+        return f"{self.terrain_type}, {self.animals}"
 
 
-def death(animal_obj):
-    animal_obj.status = 'DEAD'
-    animal_obj.hunger = 0
+class MOUNTAIN(TerrainCell):
+    def __init__(self):
+        TerrainCell.__init__(self)
+        self.terrain_type = 'MOUNTAIN'
+
+    def __str__(self):
+        return f"{self.terrain_type} , {self.animals}"
+
+    def __repr__(self):
+        return f"{self.terrain_type}, {self.animals}"
 
 
-def eaten(animal_obj):
-    animal_obj.status = 'EATEN'
-    animal_obj.hunger = 0
+class GRASS(TerrainCell):
+    def __init__(self):
+        TerrainCell.__init__(self)
+        self.terrain_type = 'GRASS'
 
-# Сlockwise movement
+    def __str__(self):
+        return f"{self.terrain_type},{self.animals}"
+
+    def __repr__(self):
+        return f"{self.terrain_type},{self.animals}"
+
+
+class Terrain:
+    def create_terrain(self):
+        i = randint(1, 3)
+        if i == 1:
+            return GRASS()
+        elif i == 2:
+            return MOUNTAIN()
+        elif i == 3:
+            return DESERT()
+        else:
+            return WATER()
+
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        # ls_terrain_types = [GRASS(), WATER(), MOUNTAIN(), DESERT()]
+        self.terrain_list = [[self.create_terrain() for i in range(width)] for o in range(height)]
+        # self.terrain_list=[] #For testing
+
+
 def move(terrain, height, width, hg, wd, animal):
     ind = terrain[hg][wd].animals.index(animal)  # index of the animal in list of animals
     anim = terrain[hg][wd].animals[ind]  # moved animal
@@ -73,92 +179,71 @@ def move(terrain, height, width, hg, wd, animal):
     terrain[hg][wd].animals.remove(anim)
 
 
-def visualisation(height, width, days):
-    '''
-        Test terrain
-    terrain = [[TerrainCell(terrain_type='GRASS', animals=[Animal(animal_type='Scavenger', hunger=4),
-                                                            Animal(animal_type='Herbivore', hunger=0,
-                                                                    status='DEAD')]), ]]
-    '''
-    # Generating the terrain
-    terrain = [[TerrainCell(terrain_type=choice(ls_terrain_types), animals=[Animal(animal_type=choice(ls_animal_type),
-                                                                                   hunger=randint(1, 10))]) for i in
-                range(width)] for i in range(height)]  # generating the terrain
+def visualising(days, width, height):
+    ter = Terrain(width=width, height=height)
+    terrain = ter.terrain_list
 
-    # Starting live in terrain
     for day in range(days):
-        animals_for_moving = []  # list with data about animal,which are going to move
-        # Killing animals who're in water
-        for hg in range(height):
-            for wd in range(width):
-                if terrain[hg][wd].terrain_type == 'WATER':  # checking if terrain is water
-                    for i in terrain[hg][wd].animals:  # iterating through all animals in water terrain
-                        death(i)
-
+        animals_for_moving = []
+        # Killing animals in water
+        for i in terrain:
+            for o in i:
+                if isinstance(o, WATER):
+                    for animal in o.animals:
+                        animal.death()
         # Printing the day
-        for hg in range(height):
-            print('| ', end='')
-            for wd in range(width):
-                print(terrain[hg][wd], '|', end=' ')
+        for i in terrain:
+            print('|', end=' ')
+            for o in i:
+                print(o, end=' | ')
             print()
             print('-' * 100)
-        print()
-        print()
-        print('The end of ', day + 1, 'day ')
-        print()
-        print()
+        print('end of ' + str(day + 1) + ' day')
 
-        # Changing in the terrain before starting the next day
+        # Changing terrain before the next day
         for hg in range(height):
             for wd in range(width):
-                for animal in terrain[hg][wd].animals:  # iterating through the list of animals in every single terrain
+                for animal in terrain[hg][wd].animals:
 
-                    if 5 > animal.hunger > 0:  # checking if animal is hunger and alive
-
+                    # detecting hunger animals
+                    if 5 > animal.hunger >= 1:
                         # For hungry Herbivore
-                        if animal.animal_type == 'Herbivore' and terrain[hg][wd].terrain_type == 'GRASS':
-                            animal.hunger += 2
-
-                        elif animal.animal_type == 'Herbivore':
-                            animals_for_moving.append([hg, wd, animal])
-
+                        if isinstance(animal, Herbivore):
+                            if isinstance(terrain[hg][wd], GRASS):
+                                animal.hunger += 2
+                            else:
+                                animals_for_moving.append([hg, wd, animal])
                         # For hungry Carnivore
-                        elif animal.animal_type == 'Carnivore':
-                            counter_of_carnivores = 0
-                            for assumed_not_carnivore in terrain[hg][wd].animals:# Checking all animals in the same terrain cell 
-                                #for finding alive and not carnivore
-                                if assumed_not_carnivore.animal_type != 'Carnivore' and assumed_not_carnivore.hunger >= 1:
-                                    eaten(assumed_not_carnivore)
+                        elif isinstance(animal, Carnivore):
+                            counter_not_carn = 0
+                            for assumed_not_carn in terrain[hg][wd].animals:
+                                if not isinstance(assumed_not_carn, Carnivore) and assumed_not_carn.status == 'ALIVE':
+                                    assumed_not_carn.eaten()
                                     animal.hunger += 2
                                     break
                                 else:
-                                    counter_of_carnivores += 1
-                                if counter_of_carnivores == len(
+                                    counter_not_carn += 1
+                                if counter_not_carn == len(
                                         terrain[hg][wd].animals):  # if there are not no Carnivores in terrain cell
                                     animals_for_moving.append([hg, wd, animal])
-
                         # For hungry Scavenger
-                        elif animal.animal_type == 'Scavenger':
-                            counter_of_not_dead = 0
-                            for assumed_dead in terrain[hg][wd].animals:# Checking all animals in the same terrain cell 
-                                #for finding dead
+                        elif isinstance(animal, Scavenger):
+                            counter_not_dead = 0
+                            for assumed_dead in terrain[hg][wd].animals:
                                 if assumed_dead.status == 'DEAD':
-                                    eaten(assumed_dead)
+                                    assumed_dead.eaten()
                                     animal.hunger += 2
-
                                     break
                                 else:
-                                    counter_of_not_dead += 1
-                                if counter_of_not_dead == len(
+                                    counter_not_dead += 1
+                                if counter_not_dead == len(
                                         terrain[hg][wd].animals):  # if there are not no dead in terrain cell
                                     animals_for_moving.append([hg, wd, animal])
 
-                    if animal.status != 'EATEN' and animal.status != 'DEAD':  # Hungering of the animal
+                    if animal.status == 'ALIVE':
                         animal.hunger -= 1
-
-                    if animal.hunger <= 0 and animal.status != 'EATEN':  # Killing animals with 0 hunger
-                        death(animal)
-                    # animals_for_moving.append([hg,wd,animal])
+                    if animal.hunger == 0 and animal.status != 'EATEN':
+                        animal.death()
         for i in animals_for_moving:
             move(terrain=terrain, height=height, width=width, hg=i[0], wd=i[1], animal=i[2])
 
@@ -169,4 +254,4 @@ days_ = int(input('How much days of terrain live you want to see (5):'))
 print()
 print()
 
-visualisation(height=height_, width=width_, days=days_)
+visualising(height=height_, width=width_, days=days_)
