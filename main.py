@@ -239,9 +239,9 @@ def visualising(days, width, height):
                                         terrain[hg][wd].animals):  # if there are not no dead in terrain cell
                                     animals_for_moving.append([hg, wd, animal])
 
-                    if animal.status == 'ALIVE':
+                    if animal.status == 'ALIVE':   # Hungering of the animal
                         animal.hunger -= 1
-                    if animal.hunger == 0 and animal.status != 'EATEN':
+                    if animal.hunger == 0 and animal.status != 'EATEN': # Killing animals with 0 hunger
                         animal.death()
          #moving animals
         for i in animals_for_moving:
