@@ -88,7 +88,7 @@ class TerrainCell:
             return Herbivore()
 
     def __init__(self):
-        ls_an = [Scavenger(), Carnivore(), Herbivore()]
+#         ls_an = [Scavenger(), Carnivore(), Herbivore()]
         self.animals = [self.create_animal()]
 
 
