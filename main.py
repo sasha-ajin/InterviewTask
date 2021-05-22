@@ -138,7 +138,7 @@ class GRASS(TerrainCell):
 
 class Terrain:
     def create_terrain(self):
-        i = randint(1, 3)
+        i = randint(1, 4)
         if i == 1:
             return GRASS()
         elif i == 2:
