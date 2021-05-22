@@ -243,6 +243,7 @@ def visualising(days, width, height):
                         animal.hunger -= 1
                     if animal.hunger == 0 and animal.status != 'EATEN':
                         animal.death()
+         #moving animals
         for i in animals_for_moving:
             move(terrain=terrain, height=height, width=width, hg=i[0], wd=i[1], animal=i[2])
 
